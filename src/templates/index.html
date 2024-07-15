@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      {% if profile_image %}
+      <img
+        src="{{ url_for('get_profile_image', filename=profile_image)}}"
+        class="img-fluid rounded shadow-sm mb-4"
+      />
+      {% else %}
+      <img
+        src="{{ url_for('static', filename='images/samples/profile_images/sample-profile-image1.jpg')}}"
+        class="img-fluid rounded shadow-sm mb-4"
+      />
+      {% endif %}
+    </div>
+    <div class="col-md-6 align-self-center">
+      <h1 class="display-4">Myntra Virtual Trial: Virtual Clothing Try On</h1>
+      <p class="lead">
+        Try on clothes from <strong>online stores</strong> or your favorite
+        celebrity outfit. See how they look on you.
+      </p>
+      <a
+        class="btn btn-primary btn-lg"
+        href="{{ url_for('upload_profile_image')}}"
+        >Try On Now</a
+      >
+    </div>
+  </div>
+</div>
+
+{% endblock %}

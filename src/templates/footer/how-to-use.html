@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style type="text/css">
+    .box-img {
+        max-height: 300px;
+        max-width: 300px;
+    }
+    .card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px;
+        border: 1px solid #E0E0E0;
+        background: #FFF;
+        box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<section class="m-3">
+    <section>
+        <h2 class="display-4">Myntra Virtual Trial: Virtual Clothing Try On</h2>
+        <p class="lead">Try on clothes from <b>online stores</b> or your favorite celebrity outfit. See how they look on you.</p>
+    </section>
+    <hr>
+    <div class="row p-3 card">
+        <div class="col-md-6">
+            <h2><span class="text-primary">&#9312</span> Upload Profile Image</h2>
+            <p class="lead">Upload your half-body profile image with a normal pose, or get started by choosing a sample profile image.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='images/samples/profile_images/sample-profile-image1.jpg')}}" class="img-fluid box-img">
+        </div>
+    </div>
+
+    <div class="row p-3 card">
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='images/samples/source_images/sample-source-image1.jpg')}}" class="img-fluid box-img">
+        </div>
+        <div class="col-md-6">
+            <h2><span class="text-primary">&#9313</span> Upload Source Image</h2>
+            <p class="lead">Copy-Paste the URL of an image containing the cloth you want to try on, or get started by choosing a sample source image.</p>
+        </div>
+    </div>
+
+    <div class="row p-3 card">
+        <div class="col-md-6">
+            <h2><span class="text-primary">&#9314</span> Try on</h2>
+            <p class="lead">Let Myntra Virtual Trial do the work. See how the clothes look on you.<br>View <a href="{{ url_for ('footer', link='guidelines.html')}}">guidelines</a> to get the best results.</p>
+        </div>
+            <img src="{{ url_for('static', filename='images/samples/sample-result-image1.jpg')}}" class="img-fluid box-img">
+    </div>
+</section>
+{% endblock %}

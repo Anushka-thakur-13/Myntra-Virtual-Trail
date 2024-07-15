@@ -1,0 +1,140 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      {% if source_image %}
+      <img
+        src="{{ url_for('get_source_image', filename=source_image)}}"
+        class="img-fluid rounded shadow-sm mb-4"
+      />
+      {% else %}
+      <img
+        src="{{ url_for('static', filename='images/samples/source_images/sample-source-image3.jpg')}}"
+        class="img-fluid rounded shadow-sm mb-4"
+      />
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      <h1 class="display-4">Myntra Virtual Trial: Virtual Clothing Try On</h1>
+
+      <!-- Flash messages -->
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show"
+        role="alert"
+      >
+        <span>{{ message }}</span>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label for="source_image_url"
+            >Paste Image URL containing source cloth.</label
+          >
+          {% if form.source_image_url.errors %} {{
+          form.source_image_url(class="form-control is-invalid",
+          id="source_image_url", accept="image/*") }}
+          <div class="invalid-feedback">
+            {% for error in form.source_image_url.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.source_image_url(class="form-control",
+          id="source_image_url", accept="image/*") }} {% endif %}
+          <small id="sourceImageHelp" class="form-text text-muted"
+            >Tip: Best when cloth is fully seen in image.</small
+          >
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" id="submit" disabled>
+            Upload Image
+          </button>
+        </div>
+
+        <!-- Loading spinner -->
+        <div class="text-center">
+          <p hidden class="loader">
+            <span
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Loading Source image...
+          </p>
+        </div>
+      </form>
+
+      <!-- Sample source images -->
+      <section class="mt-4">
+        <h4>Sample Images (Pick One):</h4>
+        <div class="row js-sample-images">
+          <!-- Sample images will be dynamically loaded here -->
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).ready(function () {
+    // Enable submit button when a valid URL is entered
+    $('#source_image_url').on('input', function () {
+      var source_image_url = $('#source_image_url').val();
+      if (source_image_url != '') {
+        $('#submit').removeAttr('disabled');
+      } else {
+        $('#submit').attr('disabled', 'true');
+      }
+    });
+
+    // Show loader on form submit
+    $('form').submit(function () {
+      $('.loader').removeAttr('hidden');
+    });
+
+    // Fetch and display sample source images via AJAX
+    var sample_image_section = $('div.js-sample-images');
+    $.ajax({
+      type: 'GET',
+      url: '/sample_source_images/',
+      dataType: 'json',
+      success: function (data) {
+        var images_list = data.sample_source_images;
+        if (images_list.length > 0) {
+          var imagesHtml = '';
+          images_list.forEach(function (image) {
+            imagesHtml += `
+              <div class='col-2 col-md-2 mb-3'>
+                <a href="/pick_source_image/${image}" class="d-block">
+                  <img src="/source_images/${image}" class="img-fluid rounded shadow-sm" style="height: 80px; object-fit: cover;" alt="Sample Image">
+                </a>
+              </div>
+            `;
+          });
+          sample_image_section.html(imagesHtml);
+        } else {
+          sample_image_section.html('<p>No sample images available.</p>');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('Error fetching sample images:', error);
+        sample_image_section.html(
+          '<p>Error fetching sample images. Please try again later.</p>'
+        );
+      },
+    });
+  });
+</script>
+{% endblock %}

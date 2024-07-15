@@ -1,0 +1,116 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="text-center mb-4">
+        {% if profile_image %}
+        <img
+          src="{{ url_for('get_profile_image', filename=profile_image)}}"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 300px"
+        />
+        {% else %}
+        <img
+          src="{{ url_for('static', filename='images/samples/profile_images/sample-profile-image1.jpg')}}"
+          class="img-fluid rounded shadow-sm"
+          style="max-height: 300px"
+        />
+        {% endif %}
+      </div>
+      <h1 class="display-4 text-center mb-4">
+        Myntra Virtual Trial: Virtual Clothing Try On
+      </h1>
+    </div>
+    <div class="col-md-6">
+      <form method="POST" action="" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label for="profile_image">Upload Profile Image</label>
+          <div class="custom-file">
+            {% if form.profile_image.errors %} {{
+            form.profile_image(class="custom-file-input is-invalid",
+            id="profile_image", accept="image/*") }}
+            <label class="custom-file-label" for="profile_image"
+              >Choose file...</label
+            >
+            <div class="invalid-feedback">
+              {% for error in form.profile_image.errors %}
+              <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %} {{ form.profile_image(class="custom-file-input",
+            id="profile_image", accept="image/*") }}
+            <label class="custom-file-label" for="profile_image"
+              >Choose file...</label
+            >
+            {% endif %}
+          </div>
+          <small id="profilehelp" class="form-text text-muted"
+            >Tip: Use a portrait image with a normal pose for the best
+            experience.</small
+          >
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" id="submit" disabled>
+            Upload Image
+          </button>
+          <a class="btn btn-outline-secondary ml-2" href="{{ url_for('home') }}"
+            >Back</a
+          >
+        </div>
+      </form>
+
+      <section class="mt-4">
+        <h4 class="mb-3">Sample Profile Images (Pick One):</h4>
+        <div class="row js-sample-images">
+          <!-- Sample images will be dynamically loaded here -->
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).ready(function () {
+    // Enable submit button when a file is selected
+    $('#profile_image').change(function () {
+      var fileName = $(this).val().split('\\').pop();
+      $('.custom-file-label').html(fileName);
+      $('#submit').removeAttr('disabled');
+    });
+
+    // Fetch and display sample profile images via AJAX
+    var sample_image_section = $('div.js-sample-images');
+    $.ajax({
+      type: 'GET',
+      url: '/sample_profile_images/',
+      dataType: 'json',
+      success: function (data) {
+        var images_list = data.sample_profile_images;
+        if (images_list.length > 0) {
+          var imagesHtml = '';
+          images_list.forEach(function (image) {
+            imagesHtml += `
+              <div class='col-2 col-md-2 mb-3'>
+                <a href="/pick_profile_image/${image}" class="d-block">
+                  <img src="/profile_images/${image}" class="img-fluid rounded shadow-sm" style="height: 80px; object-fit: cover;" alt="Sample Image">
+                </a>
+              </div>
+            `;
+          });
+          sample_image_section.html(imagesHtml);
+        } else {
+          sample_image_section.html('<p>No sample images available.</p>');
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error('Error fetching sample images:', error);
+        sample_image_section.html(
+          '<p>Error fetching sample images. Please try again later.</p>'
+        );
+      },
+    });
+  });
+</script>
+{% endblock %}

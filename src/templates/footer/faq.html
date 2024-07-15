@@ -1,0 +1,156 @@
+{% extends "base.html" %} {% block style %}
+<style type="text/css">
+  .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-header {
+    background-color: #f8f9fa;
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .card-header h5 {
+    margin-bottom: 0;
+  }
+
+  .btn-link {
+    color: #121212;
+    text-decoration: none;
+  }
+
+  .btn-link:hover {
+    text-decoration: none;
+  }
+
+  .btn-link:focus,
+  .btn-link:active {
+    text-decoration: none;
+  }
+
+  .card-body {
+    padding: 1.25rem;
+  }
+</style>
+{% endblock %} {% block content %}
+
+<section class="m-3">
+  <section>
+    <h2 class="display-4">Myntra Virtual Trial: FAQ</h2>
+    <p class="lead">Frequently Asked Questions</p>
+  </section>
+  <hr />
+  <div id="accordion">
+    <div class="card" onclick="this.classList.toggle('pressed')">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button
+            class="btn btn-link"
+            data-toggle="collapse"
+            data-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            What is Myntra Virtual Trial?
+          </button>
+        </h5>
+      </div>
+
+      <div
+        id="collapseOne"
+        class="collapse show"
+        aria-labelledby="headingOne"
+        data-parent="#accordion"
+      >
+        <div class="card-body">
+          <p>
+            Myntra Virtual Trial is an innovative platform that revolutionizes
+            fashion with its virtual try-on technology. You can upload your
+            picture and any image of clothes you want to try out, enabling you
+            to virtually try on clothes online as if you were physically trying
+            them on in front of a mirror. It supports upper wear clothes for men
+            and women.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card" onclick="this.classList.toggle('pressed')">
+      <div class="card-header" id="headingTwo">
+        <h5 class="mb-0">
+          <button
+            class="btn btn-link collapsed"
+            data-toggle="collapse"
+            data-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            What are the use cases for Myntra Virtual Trial?
+          </button>
+        </h5>
+      </div>
+      <div
+        id="collapseTwo"
+        class="collapse"
+        aria-labelledby="headingTwo"
+        data-parent="#accordion"
+      >
+        <div class="card-body">
+          <p>
+            Myntra Virtual Trial can be used by individuals to virtually try on
+            clothes from any image found online, including celebrity outfits or
+            random fashion items. It's ideal for online shoppers looking to see
+            how clothes look before buying. Additionally, online stores can
+            integrate this tool to provide a virtual try-on feature for their
+            customers.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card" onclick="this.classList.toggle('pressed')">
+      <div class="card-header" id="headingThree">
+        <h5 class="mb-0">
+          <button
+            class="btn btn-link collapsed"
+            data-toggle="collapse"
+            data-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            How does Myntra Virtual Trial work?
+          </button>
+        </h5>
+      </div>
+      <div
+        id="collapseThree"
+        class="collapse"
+        aria-labelledby="headingThree"
+        data-parent="#accordion"
+      >
+        <div class="card-body">
+          <p>
+            Myntra Virtual Trial works by extracting the clothing item from the
+            source image and fitting it onto your uploaded profile image. It
+            employs two separate deep learning models: a cloth segmentation
+            model to extract the clothing and a pose estimator model to locate
+            shoulder points. Finally, the extracted clothing is seamlessly
+            blended into your profile image based on the shoulder location.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
